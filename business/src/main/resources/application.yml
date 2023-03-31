@@ -1,45 +1,15 @@
 server:
-  port: 8001 #服务端口号
+  port: 8001
 spring:
   application:
-    name: businessServiceProvider #微服务名称，对外暴漏的微服务名称，十分重要
-  ################################################## JDBC 通用配置  ##########################################
-#  datasource:
-#    username: root        #数据库登陆用户名
-#    password: root        #数据库登陆密码
-#    url: jdbc:mysql://127.0.0.1:3306/bianchengbang_jdbc       #数据库url
-#    driver-class-name: com.mysql.jdbc.Driver                  #数据库驱动
+    name: businessServiceProvider
 
 
-  shardingsphere:
-    datasource:
-      names: master, slave
-      master:
-        type: com.alibaba.druid.pool.DruidDataSource
-        driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://192.168.1.101:3306/shardingtest
-        username: root
-        password: xu123456
-      slave:
-        type: com.alibaba.druid.pool.DruidDataSource
-        driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://192.168.1.101:3307/shardingtest
-        username: root
-        password: xu123456
-    sharding:
-      master-slave-rules:
-        ms0:
-          masterDataSourceName: master
-          slaveDataSourceNames:
-            - slave
-
-
-########################################### Spring cloud 自定义服务名称和 ip 地址###############################################
 eureka:
-  client: #将客户端注册到 business 服务列表内
+  client:
     service-url:
-      defaultZone: http://localhost:7001/business  #这个地址是 7001注册中心在 application.yml 中暴露出来额注册地址 （单机版）
+      defaultZone: http://localhost:7001/eureka
   instance:
-    instance-id: business-service-provider-8001 #自定义服务名称信息
-    prefer-ip-address: true  #显示访问路径的 ip 地址
+    instance-id: business-service-provider-8001
+    prefer-ip-address: true
 

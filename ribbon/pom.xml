@@ -9,13 +9,10 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>business</artifactId>
-	<name>business</name>
-	<description>Demo project for Spring Boot</description>
-
+	<artifactId>ribbon</artifactId>
+	<name>ribbon</name>
 	<dependencies>
 
-		<!-- 引入common模块 -->
 		<dependency>
 			<groupId>com.springcloud</groupId>
 			<artifactId>common</artifactId>
@@ -28,19 +25,13 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-
-		<!-- 修改后立即生效，热部署 -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>springloaded</artifactId>
-			<version>1.2.8.RELEASE</version>
-		</dependency>
-
-		<!--引入 Eureka Client 的依赖，将服务注册到 Eureka Server-->
+		<!--Spring Cloud Eureka 客户端依赖-->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
+
+
 	</dependencies>
 
 	<build>
