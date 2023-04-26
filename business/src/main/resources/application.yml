@@ -3,7 +3,16 @@ server:
 spring:
   application:
     name: businessServiceProvider
+  datasource:
+    username: root        #数据库登陆用户名
+    password: xu123456        #数据库登陆密码
+    url: jdbc:mysql://192.168.1.106:3306/museum?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true      #数据库url
+    driver-class-name: com.mysql.cj.jdbc.Driver                  #数据库驱动
 
+# mybatis-plus
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  // 控制台输出SQL
 
 eureka:
   client:
