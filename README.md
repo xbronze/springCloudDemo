@@ -1,5 +1,5 @@
 
-## Eureka 服务注册中心
+## Spring Cloud Eureka 服务注册中心
 
 ### Eureka 自我保护机制
 当我们在本地调试基于 Eureka 的程序时，Eureka 服务注册中心很有可能会出现如下图所示的红色警告
@@ -21,7 +21,7 @@
 > 
 > - 在 DS Replicas 选项上面出现了红色警告信息“EMERGENCY! EUREKA MAY BE INCORRECTLY CLAIMING INSTANCES ARE UP WHEN THEY'RE NOT. RENEWALS ARE LESSER THAN THRESHOLD AND HENCE THE INSTANCES ARE NOT BEING EXPIRED JUST TO BE SAFE.”，出现该信息表明 Eureka 的自我保护机制处于开启状态，且已经被触发。
 
-## Ribbon 负载均衡和服务调度组件
+## Spring Cloud Ribbon 负载均衡和服务调度组件
 
 客户端负载均衡是将负载均衡逻辑以代码的形式封装到客户端上，即负载均衡器位于客户端。客户端通过服务注册中心（例如 Eureka Server）获取到一份服务端提供的可用服务清单。有了服务清单后，负载均衡器会在客户端发送请求前通过负载均衡算法选择一个服务端实例再进行访问，以达到负载均衡的目的；
 
@@ -43,3 +43,33 @@ Spring Cloud Ribbon 提供了一个 IRule 接口，该接口主要用来定义�
 5. BestAvailableRule	继承自 ClientConfigEnabledRoundRobinRule。先过滤点故障或失效的服务实例，然后再选择并发量最小的服务实例。
 6. AvailabilityFilteringRule	先过滤掉故障或失效的服务实例，然后再选择并发量较小的服务实例。
 7. ZoneAvoidanceRule	默认的负载均衡策略，综合判断服务所在区域（zone）的性能和服务（server）的可用性，来选择服务实例。在没有区域的环境下，该策略与轮询（RandomRule）策略类似。
+
+
+## Spring Cloud Config 分布式配置组件
+
+在分布式微服务系统中，几乎所有服务的运行都离不开配置文件的支持，这些配置文件通常由各个服务自行管理，以 properties 或 yml 格式保存在各个微服务的类路径下，例如 application.properties 或 application.yml 等。
+
+这种将配置文件散落在各个服务中的管理方式，存在以下问题：
+管理难度大：配置文件散落在各个微服务中，难以管理。
+安全性低：配置跟随源代码保存在代码库中，容易造成配置泄漏。
+时效性差：微服务中的配置修改后，必须重启服务，否则无法生效。
+局限性明显：无法支持动态调整，例如日志开关、功能开关。
+
+为了解决这些问题，通常我们都会使用配置中心对配置进行统一管理。市面上开源的配置中心有很多，例如百度的 Disconf、淘宝的 diamond、360 的 QConf、携程的 Apollo 等都是解决这类问题的。Spring Cloud 也有自己的分布式配置中心，那就是 Spring Cloud Config。
+
+### Config+Bus 实现配置的动态刷新
+
+Spring Cloud Bus 又被称为消息总线，它能够通过轻量级的消息代理（例如 RabbitMQ、Kafka 等）将微服务架构中的各个服务连接起来，实现广播状态更改、事件推送等功能，还可以实现微服务之间的通信功能。
+
+目前 Spring Cloud Bus 支持两种消息代理：RabbitMQ 和 Kafka。
+
+#### Spring Cloud Bus 的基本原理
+
+Spring Cloud Bus 会使用一个轻量级的消息代理来构建一个公共的消息主题 Topic（默认为“springCloudBus”），这个 Topic 中的消息会被所有服务实例监听和消费。当其中的一个服务刷新数据时，Spring Cloud Bus 会把信息保存到 Topic 中，这样监听这个 Topic 的服务就收到消息并自动消费。
+
+#### Spring Cloud Bus 动态刷新配置的原理
+
+利用 Spring Cloud Bus 的特殊机制可以实现很多功能，其中配合 Spring Cloud Config 实现配置的动态刷新就是最典型的应用场景之一。
+
+当 Git 仓库中的配置发生了改变，我们只需要向某一个服务（既可以是 Config 服务端，也可以是 Config 客户端）发送一个 POST 请求，Spring Cloud Bus 就可以通过消息代理通知其他服务重新拉取最新配置，以实现配置的动态刷新。
+
