@@ -16,16 +16,20 @@ import org.springframework.web.client.RestTemplate;
 @AllArgsConstructor
 public class RibbonController {
 
-    // RestTemplate 是一种简单便捷的访问 restful 服务模板类，是 Spring 提供的用于访问 Rest 服务的客户端模板工具集，提供了多种便捷访问远程 HTTP 服务的方法
+    /**
+     * RestTemplate 是一种简单便捷的访问 restful 服务模板类，是 Spring 提供的用于访问 Rest 服务的客户端模板工具集，提供了多种便捷访问远程 HTTP 服务的方法
+      */
     private final RestTemplate restTemplate;
 
-    // 面向微服务编程，即通过微服务的名称来获取调用地址
-    // 使用注册到 Spring Cloud Eureka 服务注册中心中的服务，即 application.name
-    private static final String BUSINESSSERVICEPROVIDER = "http://BUSINESSSERVICEPROVIDER";
+    /**
+     * 面向微服务编程，即通过微服务的名称来获取调用地址
+     * 用注册到 Spring Cloud Eureka 服务注册中心中的服务，即 application.name
+     */
+    private static final String BUSINESSSERVICEPROVIDER = "http://SPRING-CLOUD-BUSINESS";
 
-    @GetMapping("/sayhi.do")
+    @GetMapping("/sayhi")
     public String sayHello() {
-        return restTemplate.getForObject(BUSINESSSERVICEPROVIDER + "/business/sayhi.do", String.class);
+        return restTemplate.getForObject(BUSINESSSERVICEPROVIDER + "/business/sayhi", String.class);
     }
 
 }

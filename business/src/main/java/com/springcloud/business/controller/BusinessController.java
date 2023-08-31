@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/business")
 public class BusinessController {
 
-    @GetMapping("/sayhi.do")
+    @GetMapping("/sayhi")
     public String sayHello() {
         System.out.println("hello world, iam business!");
         return "hello world, iam business!";
