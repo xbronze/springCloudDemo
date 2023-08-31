@@ -1,0 +1,8 @@
+server:
+  port: 8002
+eureka:
+  client:
+    register-with-eureka: false #服务消费者可以不向服务注册中心注册服务
+    service-url:
+      defaultZone: http://localhost:7001/eureka
+    fetch-registry: true  #服务消费者客户端需要去检索服务
